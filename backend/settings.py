@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-pm&p1^@xm$d7wbgk(rl2)uvu5m48((1nbnw4f&8+7%=(9n!6iv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["tai-p2p7.onrender.com", "tai-p2p.onrender.com"]
+
 
 
 # Application definition
