@@ -9,6 +9,9 @@ class PrzelewSerializer(serializers.ModelSerializer):
         model = Przelew
         fields = '__all__'
     def validate(self, data):
+        user = self.context['request'].user
+        if data['nadawca'].wlasciciel != user:
+            raise serializers.ValidationError("Nie możesz wysłać pieniędzy z cudzego konta")
         if data['nadawca'].saldo < data['kwota']:
             raise serializers.ValidationError("Niewystarczające środki na koncie")
         if data['nadawca'] == data['odbiorca']:
