@@ -13,7 +13,7 @@ def health(_request):
     return JsonResponse({"ok": True})
 
 router = routers.DefaultRouter()
-router.register(r'przelewy',PrzelewViewSet, basename='przelew')
+router.register(r'przelewy', PrzelewViewSet, basename='przelew')
 router.register(r'register', RejestracjaViewSet, basename='register')
 router.register(r'kalkulator', KursyWalutView, basename='kalkulator')
 
