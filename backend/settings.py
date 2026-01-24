@@ -140,6 +140,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
+    "https://tai-1-ubol.onrender.com",
+    "https://tai-p2p7.onrender.com",
 ]
 
 # REST Framework Settings
