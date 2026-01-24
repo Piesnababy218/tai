@@ -35,10 +35,13 @@ function Przelew({ setStrona, email }) {
 
     setLoading(true);
     try {
+      const token = localStorage.getItem('access');
+      
       const response = await fetch('https://tai-p2p7.onrender.com/api/przelewy/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           do: formData.odbiorca,
