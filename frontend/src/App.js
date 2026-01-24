@@ -44,15 +44,19 @@ function App() {
         })
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem('access', data.access);
-        localStorage.setItem('refresh', data.refresh);
-        setStrona('dashboard');
-      } else {
+      if (!response.ok) {
+        console.log('Status:', response.status);
+        const text = await response.text();
+        console.log('Odpowiedź:', text);
         setErrors({ form: 'Błędne dane logowania' });
+        setLoading(false);
+        return;
       }
+
+      const data = await response.json();
+      localStorage.setItem('access', data.access);
+      localStorage.setItem('refresh', data.refresh);
+      setStrona('dashboard');
     } catch (error) {
       console.error('Błąd:', error);
       setErrors({ form: 'Błąd połączenia z serwerem' });
