@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import path, include
 
-from backend.bank.views import PrzelewViewSet, RejestracjaViewSet, KursyWalutView
+from backend.bank.views import PrzelewViewSet, RejestracjaViewSet, KursyWalutView, historia
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
