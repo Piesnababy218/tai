@@ -8,14 +8,14 @@ function Dashboard({ email, wyloguj }) {
   const [strona, setStrona] = useState('dashboard');
 
   useEffect(() => {
-    fetch('https://tai-1-ubol.onrender.com/api/stan-konta/')
+    fetch('https://tai-p2p7.onrender.com/api/stan-konta/')
       .then(res => res.json())
       .then(data => {
         setStanKonta(data.stan);
       })
       .catch(err => console.error('Błąd:', err));
 
-    fetch('https://tai-1-ubol.onrender.com/api/przelewy/')
+    fetch('https://tai-p2p7.onrender.com/api/przelewy/')
       .then(res => res.json())
       .then(data => {
         console.log('Otrzymane dane:', data);

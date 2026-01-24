@@ -33,7 +33,7 @@ function App() {
 
     setLoading(true);
     try {
-      const response = await fetch('https://tai-1-ubol.onrender.com/api/token/', {
+      const response = await fetch('https://tai-p2p7.onrender.com/api/token/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

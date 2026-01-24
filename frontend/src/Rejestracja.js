@@ -42,7 +42,7 @@ function Rejestracja({ setStrona }) {
 
         setLoading(true);
         try {
-            const response = await fetch('https://tai-1-ubol.onrender.com/api/register/', {
+            const response = await fetch('https://tai-p2p7.onrender.com/api/register/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

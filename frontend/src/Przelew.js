@@ -35,7 +35,7 @@ function Przelew({ setStrona, email }) {
 
     setLoading(true);
     try {
-      const response = await fetch('https://tai-1-ubol.onrender.com/api/przelewy/', {
+      const response = await fetch('https://tai-p2p7.onrender.com/api/przelewy/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,23 +43,27 @@ function Przelew({ setStrona, email }) {
         body: JSON.stringify({
           do: formData.odbiorca,
           numer_konta: formData.numer_konta,
-          kwota: formData.kwota,
+          kwota: parseFloat(formData.kwota),
           tytul: formData.tytul,
           nadawca: email
         })
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        alert('Przelew został wysłany!');
-        setStrona('dashboard');
-      } else {
-        alert('Błąd: ' + JSON.stringify(data));
+      if (!response.ok) {
+        console.log('Status:', response.status);
+        const text = await response.text();
+        console.log('Odpowiedź:', text);
+        alert('Błąd: ' + text);
+        setLoading(false);
+        return;
       }
+
+      const data = await response.json();
+      alert('Przelew został wysłany!');
+      setStrona('dashboard');
     } catch (error) {
       console.error('Błąd:', error);
-      alert('Błąd przy wysyłaniu przelewu');
+      alert('Błąd: ' + error.message);
     }
     setLoading(false);
   };
