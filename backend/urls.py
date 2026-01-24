@@ -16,7 +16,7 @@ router = routers.DefaultRouter()
 router.register(r'przelewy', PrzelewViewSet, basename='przelew')
 router.register(r'register', RejestracjaViewSet, basename='register')
 router.register(r'kalkulator', KursyWalutView, basename='kalkulator')
-path('api/historia/', historia, name='historia'),
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -24,4 +24,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/historia/', historia, name='historia'),
 ]
