@@ -16,6 +16,7 @@ router = routers.DefaultRouter()
 router.register(r'przelewy', PrzelewViewSet, basename='przelew')
 router.register(r'register', RejestracjaViewSet, basename='register')
 router.register(r'kalkulator', KursyWalutView, basename='kalkulator')
+path('api/historia/', historia, name='historia'),
 
 urlpatterns = [
     path("admin/", admin.site.urls),
