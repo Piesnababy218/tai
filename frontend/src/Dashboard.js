@@ -8,14 +8,14 @@ function Dashboard({ email, wyloguj }) {
   const [strona, setStrona] = useState('dashboard');
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/stan-konta/')
+    fetch('https://tai-1-ubol.onrender.com/api/stan-konta/')
       .then(res => res.json())
       .then(data => {
         setStanKonta(data.stan);
       })
       .catch(err => console.error('Błąd:', err));
 
-    fetch('http://localhost:8000/api/przelewy/')
+    fetch('https://tai-1-ubol.onrender.com/api/przelewy/')
       .then(res => res.json())
       .then(data => {
         console.log('Otrzymane dane:', data);

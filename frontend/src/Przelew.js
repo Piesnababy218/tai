@@ -35,7 +35,7 @@ function Przelew({ setStrona, email }) {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/przelewy/', {
+      const response = await fetch('https://tai-1-ubol.onrender.com/api/przelewy/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
