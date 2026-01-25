@@ -6,10 +6,14 @@ from django.contrib.auth.models import User
 
 class PrzelewSerializer(serializers.ModelSerializer):
     odbiorca_nazwa = serializers.SerializerMethodField()
+    nadawca_nazwa = serializers.SerializerMethodField()
     
     class Meta:
         model = Przelew
-        fields = ['id', 'tytul', 'kwota', 'data', 'nadawca', 'odbiorca', 'odbiorca_nazwa']
+        fields = ['id', 'tytul', 'kwota', 'data', 'nadawca', 'nadawca_nazwa', 'odbiorca', 'odbiorca_nazwa']
+    
+    def get_nadawca_nazwa(self, obj):
+        return obj.nadawca.wlasciciel.email
     
     def get_odbiorca_nazwa(self, obj):
         return obj.odbiorca.wlasciciel.email

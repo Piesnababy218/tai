@@ -79,6 +79,7 @@ class StanKontaView(APIView):
         try:
             konto = Konto.objects.get(wlasciciel=request.user)
             return Response({
+                'id': konto.id,
                 'stan': str(konto.saldo),
                 'numer_konta': konto.numer_konta,
                 'status': konto.status_konta

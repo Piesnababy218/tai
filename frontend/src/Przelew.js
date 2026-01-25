@@ -21,6 +21,7 @@ function Przelew({ setStrona, email }) {
       .then(res => res.json())
       .then(data => {
         console.log('Konto nadawcy:', data);
+        setNadawcaId(data.id);
       })
       .catch(err => console.error('Błąd:', err));
   }, []);
@@ -76,7 +77,7 @@ function Przelew({ setStrona, email }) {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          nadawca: 1,
+          nadawca: nadawcaId,
           odbiorca: odborcaId,
           kwota: parseFloat(formData.kwota),
           tytul: formData.tytul
