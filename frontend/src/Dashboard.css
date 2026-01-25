@@ -142,7 +142,7 @@
 .dashboard-table th {
   text-align: left;
   padding: 10px;
-  color: #1E3A8A;
+  color: #FFFFFF;
   font-weight: bold;
 }
 
@@ -155,6 +155,7 @@
 }
 
 .dashboard-table td {
+  color: #CBD5E1;
   padding: 10px;
 }
 

@@ -10,7 +10,7 @@
 }
 
 .login-wrapper.light-mode {
-  background: #FFD93D;
+  background: #F8FAFC;
 }
 
 .login-container {
@@ -26,12 +26,14 @@
 
 .login-container.light-mode {
   background: white;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #F1F5F9;
 }
 
 .login-container h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #fff;
+  color: #1E293B;
 }
 
 .login-container.light-mode h2 {
@@ -59,8 +61,10 @@
 }
 
 .login-input.light-mode {
-  background: #fff;
-  color: #000;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  color: #334155;
+  padding: 12px;
 }
 
 .login-input.error {
@@ -95,7 +99,7 @@
 }
 
 .login-btn-primary:hover:not(:disabled) {
-  background: #ff5252;
+  background: #4338CA;
 }
 
 .login-btn-secondary {
@@ -121,6 +125,6 @@
 }
 
 .login-btn-theme.light-mode {
-  background: #E2E8F0;
-  color: #333;
+  background: #F1F5F9;
+  color: #475569;
 }
