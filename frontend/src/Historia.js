@@ -3,12 +3,14 @@ import { useState, useEffect } from 'react';
 function Historia({ setStrona, email }) {
   const [przelewy, setPrzelewy] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [sortKey, setSortKey] = useState('data');
   const [sortOrder, setSortOrder] = useState('desc');
   const [searchDo, setSearchDo] = useState('');
   const [searchTytul, setSearchTytul] = useState('');
 
   const fetchPrzelewy = (sort, order) => {
+    setLoading(true);
     const token = localStorage.getItem('access');
     
     fetch(`https://tai-p2p7.onrender.com/api/przelewy/?sort=${sort}&order=${order}`, {
@@ -17,7 +19,10 @@ function Historia({ setStrona, email }) {
         'Authorization': `Bearer ${token}`
       }
     })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then(data => {
         console.log('Otrzymane dane:', data);
         if (Array.isArray(data)) {
@@ -27,10 +32,12 @@ function Historia({ setStrona, email }) {
         } else {
           setPrzelewy([]);
         }
+        setError('');
         setLoading(false);
       })
       .catch(err => {
         console.error('Błąd:', err);
+        setError('Błąd ładowania przelewów: ' + err.message);
         setPrzelewy([]);
         setLoading(false);
       });
@@ -82,6 +89,8 @@ function Historia({ setStrona, email }) {
 
       <div style={{ flex: 0.85, background: '#F8FAFC', padding: '30px', overflowY: 'auto' }}>
         <h1 style={{ color: '#1E3A8A' }}>Historia przelewów</h1>
+        
+        {error && <div style={{ background: '#FEE2E2', color: '#DC2626', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>{error}</div>}
         
         <div style={{ background: 'white', padding: '20px', borderRadius: '8px', marginBottom: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
           <h3 style={{ color: '#1E3A8A', marginBottom: '15px' }}>Wyszukiwanie</h3>
