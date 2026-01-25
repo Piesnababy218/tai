@@ -62,7 +62,7 @@ function Historia({ setStrona, email }) {
                       <td style={{ padding: '10px' }}>{przelew.do}</td>
                       <td style={{ padding: '10px', color: '#DC2626', fontWeight: 'bold' }}>-{przelew.kwota} PLN</td>
                       <td style={{ padding: '10px' }}>{przelew.tytul}</td>
-                      <td style={{ padding: '10px', color: '#64748B' }}>{przelew.data}</td>
+                      <td style={{ padding: '10px', color: '#64748B' }}>{new Date(przelew.data).toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
                     </tr>
                   ))}
                 </tbody>
