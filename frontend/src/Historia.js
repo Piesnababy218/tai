@@ -6,7 +6,7 @@ function Historia({ setStrona, email }) {
   const [error, setError] = useState('');
   const [sortKey, setSortKey] = useState('data');
   const [sortOrder, setSortOrder] = useState('desc');
-  const [searchDo, setSearchDo] = useState('');
+  const [searchOdbiorca, setSearchOdbiorca] = useState('');
   const [searchTytul, setSearchTytul] = useState('');
 
   const fetchPrzelewy = (sort, order) => {
@@ -57,9 +57,11 @@ function Historia({ setStrona, email }) {
   };
 
   const filteredPrzelewy = przelewy.filter(przelew => {
-    const matchesDo = przelew.do.toLowerCase().includes(searchDo.toLowerCase());
-    const matchesTytul = przelew.tytul.toLowerCase().includes(searchTytul.toLowerCase());
-    return matchesDo && matchesTytul;
+    const odborcaValue = (przelew.odbiorca || '').toString().toLowerCase();
+    const tytuValue = (przelew.tytul || '').toString().toLowerCase();
+    const matchesOdbiorca = odborcaValue.includes(searchOdbiorca.toLowerCase());
+    const matchesTytul = tytuValue.includes(searchTytul.toLowerCase());
+    return matchesOdbiorca && matchesTytul;
   });
 
   const SortHeader = ({ sortBy, label }) => (
@@ -96,12 +98,12 @@ function Historia({ setStrona, email }) {
           <h3 style={{ color: '#1E3A8A', marginBottom: '15px' }}>Wyszukiwanie</h3>
           <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
             <div style={{ flex: 1, minWidth: '200px' }}>
-              <label style={{ display: 'block', color: '#1E3A8A', fontWeight: 'bold', marginBottom: '5px' }}>Do kogo</label>
+              <label style={{ display: 'block', color: '#1E3A8A', fontWeight: 'bold', marginBottom: '5px' }}>Do kogo (ID odbiorcy)</label>
               <input 
                 type="text" 
-                placeholder="Szukaj po nazwie odbiorcy..." 
-                value={searchDo}
-                onChange={(e) => setSearchDo(e.target.value)}
+                placeholder="Szukaj po ID odbiorcy..." 
+                value={searchOdbiorca}
+                onChange={(e) => setSearchOdbiorca(e.target.value)}
                 style={{ width: '100%', padding: '10px', border: '1px solid #CBD5E1', borderRadius: '6px', boxSizing: 'border-box' }}
               />
             </div>
@@ -118,7 +120,7 @@ function Historia({ setStrona, email }) {
             <div style={{ alignSelf: 'flex-end' }}>
               <button 
                 onClick={() => {
-                  setSearchDo('');
+                  setSearchOdbiorca('');
                   setSearchTytul('');
                 }}
                 style={{ padding: '10px 20px', background: '#E2E8F0', color: '#1E3A8A', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
@@ -137,7 +139,7 @@ function Historia({ setStrona, email }) {
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
                     <tr style={{ borderBottom: '2px solid #0EA5E9', background: '#F0F9FF' }}>
-                      <th style={{ textAlign: 'left', padding: '10px', color: '#1E3A8A' }}>Do</th>
+                      <th style={{ textAlign: 'left', padding: '10px', color: '#1E3A8A' }}>Do (Odbiorca)</th>
                       <SortHeader sortBy="kwota" label="Kwota" />
                       <SortHeader sortBy="tytul" label="Tytuł" />
                       <SortHeader sortBy="data" label="Data" />
@@ -146,7 +148,7 @@ function Historia({ setStrona, email }) {
                   <tbody>
                     {filteredPrzelewy.map((przelew) => (
                       <tr key={przelew.id} style={{ borderBottom: '1px solid #E2E8F0' }}>
-                        <td style={{ padding: '10px' }}>{przelew.do}</td>
+                        <td style={{ padding: '10px' }}>{przelew.odbiorca}</td>
                         <td style={{ padding: '10px', color: '#DC2626', fontWeight: 'bold' }}>-{przelew.kwota} PLN</td>
                         <td style={{ padding: '10px' }}>{przelew.tytul}</td>
                         <td style={{ padding: '10px', color: '#64748B' }}>{new Date(przelew.data).toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
