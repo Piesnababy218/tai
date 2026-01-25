@@ -5,9 +5,15 @@ import random
 from django.contrib.auth.models import User
 
 class PrzelewSerializer(serializers.ModelSerializer):
+    odbiorca_nazwa = serializers.SerializerMethodField()
+    
     class Meta:
         model = Przelew
-        fields = '__all__'
+        fields = ['id', 'tytul', 'kwota', 'data', 'nadawca', 'odbiorca', 'odbiorca_nazwa']
+    
+    def get_odbiorca_nazwa(self, obj):
+        return obj.odbiorca.wlasciciel.email
+    
     def validate(self, data):
         user = self.context['request'].user
         if data['nadawca'].wlasciciel != user:
@@ -21,6 +27,7 @@ class PrzelewSerializer(serializers.ModelSerializer):
         if data['odbiorca'].status_konta == 'zablokowane':
             raise serializers.ValidationError("Konto odbiorcy jest nieaktywne")
         return data
+    
     def create(self, data):
         try:
             with transaction.atomic():
@@ -37,12 +44,14 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'password', 'email']
         extra_kwargs = {'password': {'write_only': True}}
+    
     def validate(self,data):
         if len(data['password']) < 8:
             raise serializers.ValidationError("Hasło musi mieć przynajmniej 8 znaków")
         if not any(char.isdigit() for char in data['password']):
             raise serializers.ValidationError("Hasło musi zawierać cyfry")
         return data
+    
     def create(self, data):
         with transaction.atomic():
             haslo = data.pop('password')
@@ -57,5 +66,3 @@ class UserSerializer(serializers.ModelSerializer):
                 status_konta = 'aktywne',
             )
             return uzytkownik
-
-        
