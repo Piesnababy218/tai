@@ -47,6 +47,11 @@ function Przelew({ setStrona, email }) {
   };
 
   const handleSubmit = async () => {
+    if (!nadawcaId) {
+      alert('Czekaj na załadowanie danych konta...');
+      return;
+    }
+    
     if (!waliduj()) return;
 
     setLoading(true);
@@ -135,8 +140,8 @@ function Przelew({ setStrona, email }) {
           </div>
 
           <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-            <button onClick={handleSubmit} disabled={loading} style={{ flex: 1, padding: '12px', background: '#0EA5E9', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px' }}>
-              {loading ? 'Wysyłanie...' : 'Wyślij przelew'}
+            <button onClick={handleSubmit} disabled={loading || !nadawcaId} style={{ flex: 1, padding: '12px', background: nadawcaId ? '#0EA5E9' : '#CBD5E1', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px' }}>
+              {loading ? 'Wysyłanie...' : nadawcaId ? 'Wyślij przelew' : 'Ładowanie...'}
             </button>
             <button onClick={() => setStrona('dashboard')} style={{ flex: 1, padding: '12px', background: '#E2E8F0', color: '#1E3A8A', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px' }}>Wróć</button>
           </div>
