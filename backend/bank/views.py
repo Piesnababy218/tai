@@ -14,11 +14,24 @@ from rest_framework.response import Response
 class PrzelewViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PrzelewSerializer
+    
     def get_queryset(self):
         user = self.request.user
-        return Przelew.objects.filter(
+        queryset = Przelew.objects.filter(
             Q(nadawca__wlasciciel=user) | Q(odbiorca__wlasciciel=user)
         )
+        
+        # Sortowanie z backendu
+        sort_by = self.request.query_params.get('sort', 'data')
+        sort_order = self.request.query_params.get('order', 'desc')
+        
+        if sort_by in ['kwota', 'tytul', 'data']:
+            if sort_order == 'asc':
+                queryset = queryset.order_by(sort_by)
+            else:
+                queryset = queryset.order_by(f'-{sort_by}')
+        
+        return queryset
 
 
 class RejestracjaViewSet(viewsets.ModelViewSet):

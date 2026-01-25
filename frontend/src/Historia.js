@@ -3,11 +3,13 @@ import { useState, useEffect } from 'react';
 function Historia({ setStrona, email }) {
   const [przelewy, setPrzelewy] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sortKey, setSortKey] = useState('data');
+  const [sortOrder, setSortOrder] = useState('desc');
 
-  useEffect(() => {
+  const fetchPrzelewy = (sort, order) => {
     const token = localStorage.getItem('access');
     
-    fetch('https://tai-p2p7.onrender.com/api/przelewy/', {
+    fetch(`https://tai-p2p7.onrender.com/api/przelewy/?sort=${sort}&order=${order}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -30,7 +32,36 @@ function Historia({ setStrona, email }) {
         setPrzelewy([]);
         setLoading(false);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    fetchPrzelewy(sortKey, sortOrder);
+  }, [sortKey, sortOrder]);
+
+  const handleSort = (key) => {
+    if (sortKey === key) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortKey(key);
+      setSortOrder('asc');
+    }
+  };
+
+  const SortHeader = ({ sortBy, label }) => (
+    <th 
+      onClick={() => handleSort(sortBy)}
+      style={{ 
+        textAlign: 'left', 
+        padding: '10px', 
+        color: '#1E3A8A',
+        cursor: 'pointer',
+        userSelect: 'none',
+        background: sortKey === sortBy ? '#E0F2FE' : '#F0F9FF'
+      }}
+    >
+      {label} {sortKey === sortBy ? (sortOrder === 'asc' ? '↑' : '↓') : ''}
+    </th>
+  );
 
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
@@ -51,9 +82,9 @@ function Historia({ setStrona, email }) {
                 <thead>
                   <tr style={{ borderBottom: '2px solid #0EA5E9', background: '#F0F9FF' }}>
                     <th style={{ textAlign: 'left', padding: '10px', color: '#1E3A8A' }}>Do</th>
-                    <th style={{ textAlign: 'left', padding: '10px', color: '#1E3A8A' }}>Kwota</th>
-                    <th style={{ textAlign: 'left', padding: '10px', color: '#1E3A8A' }}>Tytuł</th>
-                    <th style={{ textAlign: 'left', padding: '10px', color: '#1E3A8A' }}>Data</th>
+                    <SortHeader sortBy="kwota" label="Kwota" />
+                    <SortHeader sortBy="tytul" label="Tytuł" />
+                    <SortHeader sortBy="data" label="Data" />
                   </tr>
                 </thead>
                 <tbody>
