@@ -57,3 +57,18 @@ class KursyWalutView(viewsets.ViewSet):
                 "wynik": round(wynik,2)
             })
         return Response({"error": "Nie znaleziono waluty"}, status=400)
+
+
+class StanKontaView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        try:
+            konto = Konto.objects.get(wlasciciel=request.user)
+            return Response({
+                'stan': str(konto.saldo),
+                'numer_konta': konto.numer_konta,
+                'status': konto.status_konta
+            })
+        except Konto.DoesNotExist:
+            return Response({"error": "Konto nie znalezione"}, status=404)
