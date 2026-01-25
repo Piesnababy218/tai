@@ -113,7 +113,7 @@
 }
 
 .login-btn-theme {
-  width: 100%;
+  width: 50%;
   padding: 10px;
   border: none;
   border-radius: 4px;
@@ -127,6 +127,6 @@
 }
 
 .login-btn-theme.light-mode {
-  background: #000;
+  background: #613030;
   color: #0254c7;
 }
