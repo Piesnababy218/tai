@@ -23,7 +23,7 @@ class PrzelewSerializer(serializers.ModelSerializer):
     
     def get_jest_wychodzacy(self, obj):
         user = self.context['request'].user
-        return obj.nadawca.wlasciciel == user
+        return obj.nadawca.wlasciciel.id == user.id
     
     def validate(self, data):
         user = self.context['request'].user
