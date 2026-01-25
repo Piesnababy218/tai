@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './Kalkulator.css';
 
 function Kalkulator({ setStrona, darkMode }) {
   const [kursy, setKursy] = useState([]);
@@ -8,13 +9,6 @@ function Kalkulator({ setStrona, darkMode }) {
   const [wynik, setWynik] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  const bgColor = darkMode ? '#1a1a2e' : '#F8FAFC';
-  const cardColor = darkMode ? '#16213e' : 'white';
-  const textColor = darkMode ? '#fff' : '#1E3A8A';
-  const sidebarColor = darkMode ? '#0f3460' : '#1E3A8A';
-  const inputBg = darkMode ? '#0f3460' : '#fff';
-  const inputText = darkMode ? '#fff' : '#000';
 
   useEffect(() => {
     pobierzKursy();
@@ -74,39 +68,39 @@ function Kalkulator({ setStrona, darkMode }) {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: bgColor }}>
-      <div style={{ flex: 0.15, background: sidebarColor, padding: '20px', color: 'white' }}>
+    <div className={`kalkulator-container ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+      <div className="kalkulator-sidebar">
         <h2>Menu</h2>
-        <button onClick={() => setStrona('dashboard')} style={{ padding: '10px 20px', background: '#0EA5E9', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', marginTop: '20px', width: '100%', marginBottom: '10px' }}>Dashboard</button>
+        <button onClick={() => setStrona('dashboard')} className="kalkulator-button">Dashboard</button>
       </div>
 
-      <div style={{ flex: 0.85, background: bgColor, padding: '30px', overflowY: 'auto' }}>
-        <h1 style={{ color: textColor }}>Kalkulator Walut</h1>
+      <div className={`kalkulator-content ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+        <h1>Kalkulator Walut</h1>
         
-        {error && <div style={{ background: '#FEE2E2', color: '#DC2626', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>{error}</div>}
+        {error && <div className="kalkulator-error">{error}</div>}
 
-        <div style={{ background: cardColor, padding: '30px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', maxWidth: '500px' }}>
+        <div className={`kalkulator-card ${darkMode ? 'dark-mode' : 'light-mode'}`}>
           {loading ? (
-            <p style={{ color: textColor }}>Ładowanie kursów...</p>
+            <p className="kalkulator-loading">Ładowanie kursów...</p>
           ) : (
             <>
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', color: textColor, fontWeight: 'bold', marginBottom: '8px' }}>Kwota</label>
+              <div className="kalkulator-form-group">
+                <label>Kwota</label>
                 <input 
                   type="number" 
                   placeholder="0.00"
                   value={kwota}
                   onChange={(e) => setKwota(e.target.value)}
-                  style={{ width: '100%', padding: '12px', border: '1px solid #CBD5E1', borderRadius: '6px', boxSizing: 'border-box', background: inputBg, color: inputText }}
+                  className={darkMode ? 'dark-mode' : ''}
                 />
               </div>
 
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', color: textColor, fontWeight: 'bold', marginBottom: '8px' }}>Waluta</label>
+              <div className="kalkulator-form-group">
+                <label>Waluta</label>
                 <select 
                   value={waluty}
                   onChange={(e) => setWaluty(e.target.value)}
-                  style={{ width: '100%', padding: '12px', border: '1px solid #CBD5E1', borderRadius: '6px', boxSizing: 'border-box', background: inputBg, color: inputText }}
+                  className={darkMode ? 'dark-mode' : ''}
                 >
                   {kursy.map((kurs) => (
                     <option key={kurs.code} value={kurs.code}>
@@ -116,12 +110,12 @@ function Kalkulator({ setStrona, darkMode }) {
                 </select>
               </div>
 
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', color: textColor, fontWeight: 'bold', marginBottom: '8px' }}>Kierunek konwersji</label>
+              <div className="kalkulator-form-group">
+                <label>Kierunek konwersji</label>
                 <select 
                   value={kierunek}
                   onChange={(e) => setKierunek(e.target.value)}
-                  style={{ width: '100%', padding: '12px', border: '1px solid #CBD5E1', borderRadius: '6px', boxSizing: 'border-box', background: inputBg, color: inputText }}
+                  className={darkMode ? 'dark-mode' : ''}
                 >
                   <option value="na_pln">Na PLN</option>
                   <option value="z_pln">Z PLN</option>
@@ -130,21 +124,21 @@ function Kalkulator({ setStrona, darkMode }) {
 
               <button 
                 onClick={oblicz}
-                style={{ width: '100%', padding: '12px', background: '#0EA5E9', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px' }}
+                className="kalkulator-calculate-button"
               >
                 Oblicz
               </button>
 
               {wynik && (
-                <div style={{ marginTop: '30px', padding: '20px', background: darkMode ? '#0f3460' : '#F0F9FF', borderRadius: '8px', borderLeft: '4px solid #0EA5E9' }}>
-                  <h3 style={{ color: textColor, marginBottom: '15px' }}>Wynik</h3>
-                  <p style={{ color: textColor, marginBottom: '10px' }}>
+                <div className={`kalkulator-result ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+                  <h3>Wynik</h3>
+                  <p>
                     <strong>Kwota oryginalna:</strong> {wynik['kwota oryginalna']} {wynik.waluta}
                   </p>
-                  <p style={{ color: textColor, marginBottom: '10px' }}>
+                  <p>
                     <strong>Kurs:</strong> 1 {wynik.waluta} = {wynik.kurs} PLN
                   </p>
-                  <p style={{ color: '#0EA5E9', fontSize: '20px', fontWeight: 'bold' }}>
+                  <p className="kalkulator-result-value">
                     Wynik: {wynik.wynik} PLN
                   </p>
                 </div>

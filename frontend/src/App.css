@@ -1,38 +1,126 @@
-.App {
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-wrapper.dark-mode {
+  background: #1a1a2e;
+}
+
+.login-wrapper.light-mode {
+  background: #FFD93D;
+}
+
+.login-container {
+  width: 300px;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-container.dark-mode {
+  background: #16213e;
+}
+
+.login-container.light-mode {
+  background: white;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.login-container.light-mode h2 {
+  color: #000;
+}
+
+.form-error {
+  color: #DC2626;
+  margin-bottom: 15px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.login-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.login-input.dark-mode {
+  background: #0f3460;
+  color: #fff;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.login-input.light-mode {
+  background: #fff;
+  color: #000;
+}
+
+.login-input.error {
+  border: 2px solid red;
+}
+
+.input-error {
+  color: red;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.login-button {
+  width: 100%;
+  padding: 10px;
   color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.login-btn-primary {
+  background: #FF6B6B;
+}
+
+.login-btn-primary:hover:not(:disabled) {
+  background: #ff5252;
+}
+
+.login-btn-secondary {
+  background: #3498DB;
+}
+
+.login-btn-secondary:hover:not(:disabled) {
+  background: #2980b9;
+}
+
+.login-btn-theme {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.login-btn-theme.dark-mode {
+  background: #0f3460;
+  color: #FFD93D;
+}
+
+.login-btn-theme.light-mode {
+  background: #E2E8F0;
+  color: #333;
 }

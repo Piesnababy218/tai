@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './Przelew.css';
 
 function Przelew({ setStrona, email }) {
   const [formData, setFormData] = useState({
@@ -58,7 +59,6 @@ function Przelew({ setStrona, email }) {
     try {
       const token = localStorage.getItem('access');
       
-      // Znaleź ID odbiorcy po numerze konta
       const kontoResponse = await fetch(`https://tai-p2p7.onrender.com/api/konto-by-numer/${formData.numer_konta}/`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -74,7 +74,6 @@ function Przelew({ setStrona, email }) {
       const kontoData = await kontoResponse.json();
       const odborcaId = kontoData.id;
 
-      // Wyślij przelew
       const response = await fetch('https://tai-p2p7.onrender.com/api/przelewy/', {
         method: 'POST',
         headers: {
@@ -109,41 +108,41 @@ function Przelew({ setStrona, email }) {
   };
 
   return (
-    <div style={{ background: '#1E3A8A', height: '100vh', width: '100vw', margin: 0, padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '80vh', width: '50vw', background: '#F8FAFC', borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)', padding: '40px', overflowY: 'auto' }}>
-        <h1 style={{ color: '#1E3A8A', marginBottom: '40px', textAlign: 'center' }}>Nowy Przelew</h1>
+    <div className="przelew-wrapper">
+      <div className="przelew-container">
+        <h1>Nowy Przelew</h1>
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
+        <div className="przelew-form">
           
-          <div>
-            <label style={{ color: '#1E3A8A', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Imię odbiorcy</label>
-            <input type="text" name="odbiorca" placeholder="Jan Kowalski" value={formData.odbiorca} onChange={handleChange} style={{ width: '100%', padding: '12px', border: errors.odbiorca ? '2px solid #DC2626' : '1px solid #CBD5E1', borderRadius: '6px', boxSizing: 'border-box', fontSize: '14px' }} />
-            {errors.odbiorca && <p style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px' }}>{errors.odbiorca}</p>}
+          <div className="przelew-form-group">
+            <label>Imię odbiorcy</label>
+            <input type="text" name="odbiorca" placeholder="Jan Kowalski" value={formData.odbiorca} onChange={handleChange} className={errors.odbiorca ? 'error' : ''} />
+            {errors.odbiorca && <p className="przelew-form-error">{errors.odbiorca}</p>}
           </div>
 
-          <div>
-            <label style={{ color: '#1E3A8A', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Numer konta</label>
-            <input type="text" name="numer_konta" placeholder="12345678901234567890" value={formData.numer_konta} onChange={handleChange} style={{ width: '100%', padding: '12px', border: errors.numer_konta ? '2px solid #DC2626' : '1px solid #CBD5E1', borderRadius: '6px', boxSizing: 'border-box', fontSize: '14px' }} />
-            {errors.numer_konta && <p style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px' }}>{errors.numer_konta}</p>}
+          <div className="przelew-form-group">
+            <label>Numer konta</label>
+            <input type="text" name="numer_konta" placeholder="12345678901234567890" value={formData.numer_konta} onChange={handleChange} className={errors.numer_konta ? 'error' : ''} />
+            {errors.numer_konta && <p className="przelew-form-error">{errors.numer_konta}</p>}
           </div>
 
-          <div>
-            <label style={{ color: '#1E3A8A', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Kwota (PLN)</label>
-            <input type="number" name="kwota" placeholder="100" value={formData.kwota} onChange={handleChange} style={{ width: '100%', padding: '12px', border: errors.kwota ? '2px solid #DC2626' : '1px solid #CBD5E1', borderRadius: '6px', boxSizing: 'border-box', fontSize: '14px' }} />
-            {errors.kwota && <p style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px' }}>{errors.kwota}</p>}
+          <div className="przelew-form-group">
+            <label>Kwota (PLN)</label>
+            <input type="number" name="kwota" placeholder="100" value={formData.kwota} onChange={handleChange} className={errors.kwota ? 'error' : ''} />
+            {errors.kwota && <p className="przelew-form-error">{errors.kwota}</p>}
           </div>
 
-          <div>
-            <label style={{ color: '#1E3A8A', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Tytuł przelewu</label>
-            <input type="text" name="tytul" placeholder="Zapłata za..." value={formData.tytul} onChange={handleChange} style={{ width: '100%', padding: '12px', border: errors.tytul ? '2px solid #DC2626' : '1px solid #CBD5E1', borderRadius: '6px', boxSizing: 'border-box', fontSize: '14px' }} />
-            {errors.tytul && <p style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px' }}>{errors.tytul}</p>}
+          <div className="przelew-form-group">
+            <label>Tytuł przelewu</label>
+            <input type="text" name="tytul" placeholder="Zapłata za..." value={formData.tytul} onChange={handleChange} className={errors.tytul ? 'error' : ''} />
+            {errors.tytul && <p className="przelew-form-error">{errors.tytul}</p>}
           </div>
 
-          <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-            <button onClick={handleSubmit} disabled={loading || !nadawcaId} style={{ flex: 1, padding: '12px', background: nadawcaId ? '#0EA5E9' : '#CBD5E1', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px' }}>
+          <div className="przelew-buttons">
+            <button onClick={handleSubmit} disabled={loading || !nadawcaId} className="przelew-button przelew-button-submit">
               {loading ? 'Wysyłanie...' : nadawcaId ? 'Wyślij przelew' : 'Ładowanie...'}
             </button>
-            <button onClick={() => setStrona('dashboard')} style={{ flex: 1, padding: '12px', background: '#E2E8F0', color: '#1E3A8A', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px' }}>Wróć</button>
+            <button onClick={() => setStrona('dashboard')} className="przelew-button przelew-button-cancel">Wróć</button>
           </div>
         </div>
       </div>

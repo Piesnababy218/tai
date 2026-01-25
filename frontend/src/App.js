@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Dashboard from './Dashboard';
 import Rejestracja from './Rejestracja';
+import './App.css';
 
 function App() {
   const [strona, setStrona] = useState('logowanie');
@@ -8,6 +9,14 @@ function App() {
   const [haslo, setHaslo] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('darkMode');
+    if (saved) {
+      setDarkMode(JSON.parse(saved));
+    }
+  }, []);
 
   const waliduj = () => {
     const noweBledy = {};
@@ -77,8 +86,14 @@ function App() {
     localStorage.removeItem('refresh');
   };
 
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem('darkMode', JSON.stringify(newMode));
+  };
+
   if (strona === 'dashboard') {
-    return <Dashboard email={email} wyloguj={wyloguj} />;
+    return <Dashboard email={email} wyloguj={wyloguj} darkMode={darkMode} toggleDarkMode={toggleDarkMode} />;
   }
 
   if (strona === 'rejestracja') {
@@ -86,42 +101,48 @@ function App() {
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#FFD93D' }}>
-      <div style={{ width: '300px', background: 'white', padding: '40px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Logowanie</h2>
+    <div className={`login-wrapper ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+      <div className={`login-container ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+        <h2>Logowanie</h2>
         
-        {errors.form && <p style={{ color: '#DC2626', marginBottom: '15px', textAlign: 'center' }}>{errors.form}</p>}
+        {errors.form && <p className="form-error">{errors.form}</p>}
         
         <input 
           type="email" 
           placeholder="Email" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ width: '100%', padding: '10px', marginBottom: '5px', border: errors.email ? '2px solid red' : '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }} 
+          className={`login-input ${darkMode ? 'dark-mode' : 'light-mode'} ${errors.email ? 'error' : ''}`}
         />
-        {errors.email && <p style={{ color: 'red', fontSize: '12px', marginBottom: '10px' }}>{errors.email}</p>}
+        {errors.email && <p className="input-error">{errors.email}</p>}
         
         <input 
           type="password" 
           placeholder="Hasło" 
           value={haslo}
           onChange={(e) => setHaslo(e.target.value)}
-          style={{ width: '100%', padding: '10px', marginBottom: '5px', border: errors.haslo ? '2px solid red' : '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }} 
+          className={`login-input ${darkMode ? 'dark-mode' : 'light-mode'} ${errors.haslo ? 'error' : ''}`}
         />
-        {errors.haslo && <p style={{ color: 'red', fontSize: '12px', marginBottom: '10px' }}>{errors.haslo}</p>}
+        {errors.haslo && <p className="input-error">{errors.haslo}</p>}
         
         <button 
           onClick={loguj}
           disabled={loading}
-          style={{ width: '100%', padding: '10px', background: '#FF6B6B', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', marginBottom: '10px' }}
+          className="login-button login-btn-primary"
         >
           {loading ? 'Logowanie...' : 'Zaloguj się'}
         </button>
         <button
           onClick={rejestracja}
-          style={{ width: '100%', padding: '10px', color: 'white', background: '#3498DB', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+          className="login-button login-btn-secondary"
         >
           Rejestracja konta w banku
+        </button>
+        <button
+          onClick={toggleDarkMode}
+          className={`login-btn-theme ${darkMode ? 'dark-mode' : 'light-mode'}`}
+        >
+          {darkMode ? '☀️ Tryb jasny' : '🌙 Tryb ciemny'}
         </button>
       </div>
     </div>
