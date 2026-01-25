@@ -7,16 +7,23 @@ from django.contrib.auth.models import User
 class PrzelewSerializer(serializers.ModelSerializer):
     odbiorca_nazwa = serializers.SerializerMethodField()
     nadawca_nazwa = serializers.SerializerMethodField()
+    jest_wychodzacy = serializers.SerializerMethodField()
+    nadawca = serializers.PrimaryKeyRelatedField(queryset=Konto.objects.all())
+    odbiorca = serializers.PrimaryKeyRelatedField(queryset=Konto.objects.all())
     
     class Meta:
         model = Przelew
-        fields = ['id', 'tytul', 'kwota', 'data', 'nadawca', 'nadawca_nazwa', 'odbiorca', 'odbiorca_nazwa']
+        fields = ['id', 'tytul', 'kwota', 'data', 'nadawca', 'nadawca_nazwa', 'odbiorca', 'odbiorca_nazwa', 'jest_wychodzacy']
     
     def get_nadawca_nazwa(self, obj):
         return obj.nadawca.wlasciciel.email
     
     def get_odbiorca_nazwa(self, obj):
         return obj.odbiorca.wlasciciel.email
+    
+    def get_jest_wychodzacy(self, obj):
+        user = self.context['request'].user
+        return obj.nadawca.wlasciciel == user
     
     def validate(self, data):
         user = self.context['request'].user
@@ -35,10 +42,16 @@ class PrzelewSerializer(serializers.ModelSerializer):
     def create(self, data):
         try:
             with transaction.atomic():
-                data['nadawca'].saldo -= data['kwota']
-                data['nadawca'].save()
-                data['odbiorca'].saldo += data['kwota']
-                data['odbiorca'].save()
+                nadawca = data['nadawca']
+                odbiorca = data['odbiorca']
+                kwota = data['kwota']
+                
+                nadawca.saldo -= kwota
+                nadawca.save()
+                
+                odbiorca.saldo += kwota
+                odbiorca.save()
+                
                 return Przelew.objects.create(**data)
         except Exception as e:
             raise serializers.ValidationError({"error": "Błąd krytyczny transakcji", "details": str(e)})
