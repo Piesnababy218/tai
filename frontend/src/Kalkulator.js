@@ -131,18 +131,18 @@ function Kalkulator({ setStrona, darkMode }) {
 
               {wynik && (
                 <div className={`kalkulator-result ${darkMode ? 'dark-mode' : 'light-mode'}`}>
-                  <h3>Wynik</h3>
-                  <p>
-                    <strong>Kwota oryginalna:</strong> {wynik['kwota oryginalna']} {wynik.waluta}
-                  </p>
-                  <p>
+                    <h3>Wynik</h3>
+                    <p>
+                    <strong>Kwota oryginalna:</strong> {wynik['kwota oryginalna']} {kierunek === 'na_pln' ? wynik.waluta : 'PLN'}
+                    </p>
+                    <p>
                     <strong>Kurs:</strong> 1 {wynik.waluta} = {wynik.kurs} PLN
-                  </p>
-                  <p className="kalkulator-result-value">
-                    Wynik: {wynik.wynik} PLN
-                  </p>
+                    </p>
+                    <p className="kalkulator-result-value">
+                    Wynik: {wynik.wynik} {kierunek === 'na_pln' ? 'PLN' : wynik.waluta}
+                    </p>
                 </div>
-              )}
+                )}
             </>
           )}
         </div>
