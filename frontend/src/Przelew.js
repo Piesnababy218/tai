@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Przelew({ setStrona, email }) {
   const [formData, setFormData] = useState({
@@ -9,6 +9,21 @@ function Przelew({ setStrona, email }) {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [nadawcaId, setNadawcaId] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('access');
+    fetch('https://tai-p2p7.onrender.com/api/stan-konta/', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Konto nadawcy:', data);
+      })
+      .catch(err => console.error('Błąd:', err));
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -37,6 +52,23 @@ function Przelew({ setStrona, email }) {
     try {
       const token = localStorage.getItem('access');
       
+      // Znaleź ID odbiorcy po numerze konta
+      const kontoResponse = await fetch(`https://tai-p2p7.onrender.com/api/konto-by-numer/${formData.numer_konta}/`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!kontoResponse.ok) {
+        alert('Błąd: Konto odbiorcy nie znalezione');
+        setLoading(false);
+        return;
+      }
+
+      const kontoData = await kontoResponse.json();
+      const odborcaId = kontoData.id;
+
+      // Wyślij przelew
       const response = await fetch('https://tai-p2p7.onrender.com/api/przelewy/', {
         method: 'POST',
         headers: {
@@ -44,11 +76,10 @@ function Przelew({ setStrona, email }) {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          do: formData.odbiorca,
-          numer_konta: formData.numer_konta,
+          nadawca: 1,
+          odbiorca: odborcaId,
           kwota: parseFloat(formData.kwota),
-          tytul: formData.tytul,
-          nadawca: email
+          tytul: formData.tytul
         })
       });
 

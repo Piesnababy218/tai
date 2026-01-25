@@ -85,3 +85,14 @@ class StanKontaView(APIView):
             })
         except Konto.DoesNotExist:
             return Response({"error": "Konto nie znalezione"}, status=404)
+
+
+class KontoByNumerView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request, numer):
+        try:
+            konto = Konto.objects.get(numer_konta=numer)
+            return Response({'id': konto.id})
+        except Konto.DoesNotExist:
+            return Response({"error": "Konto nie znalezione"}, status=404)
