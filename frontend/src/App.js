@@ -142,7 +142,7 @@ function App() {
           onClick={toggleDarkMode}
           className={`login-btn-theme ${darkMode ? 'dark-mode' : 'light-mode'}`}
         >
-          {darkMode ? '☀️ Tryb jasny' : '🌙 Tryb ciemny'}
+          {darkMode ? '👨🏻 Tryb jasny' : '👨🏿 Tryb ciemny'}
         </button>
       </div>
     </div>
