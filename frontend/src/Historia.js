@@ -5,6 +5,8 @@ function Historia({ setStrona, email }) {
   const [loading, setLoading] = useState(true);
   const [sortKey, setSortKey] = useState('data');
   const [sortOrder, setSortOrder] = useState('desc');
+  const [searchDo, setSearchDo] = useState('');
+  const [searchTytul, setSearchTytul] = useState('');
 
   const fetchPrzelewy = (sort, order) => {
     const token = localStorage.getItem('access');
@@ -47,6 +49,12 @@ function Historia({ setStrona, email }) {
     }
   };
 
+  const filteredPrzelewy = przelewy.filter(przelew => {
+    const matchesDo = przelew.do.toLowerCase().includes(searchDo.toLowerCase());
+    const matchesTytul = przelew.tytul.toLowerCase().includes(searchTytul.toLowerCase());
+    return matchesDo && matchesTytul;
+  });
+
   const SortHeader = ({ sortBy, label }) => (
     <th 
       onClick={() => handleSort(sortBy)}
@@ -75,31 +83,71 @@ function Historia({ setStrona, email }) {
       <div style={{ flex: 0.85, background: '#F8FAFC', padding: '30px', overflowY: 'auto' }}>
         <h1 style={{ color: '#1E3A8A' }}>Historia przelewów</h1>
         
+        <div style={{ background: 'white', padding: '20px', borderRadius: '8px', marginBottom: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+          <h3 style={{ color: '#1E3A8A', marginBottom: '15px' }}>Wyszukiwanie</h3>
+          <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: '200px' }}>
+              <label style={{ display: 'block', color: '#1E3A8A', fontWeight: 'bold', marginBottom: '5px' }}>Do kogo</label>
+              <input 
+                type="text" 
+                placeholder="Szukaj po nazwie odbiorcy..." 
+                value={searchDo}
+                onChange={(e) => setSearchDo(e.target.value)}
+                style={{ width: '100%', padding: '10px', border: '1px solid #CBD5E1', borderRadius: '6px', boxSizing: 'border-box' }}
+              />
+            </div>
+            <div style={{ flex: 1, minWidth: '200px' }}>
+              <label style={{ display: 'block', color: '#1E3A8A', fontWeight: 'bold', marginBottom: '5px' }}>Tytuł przelewu</label>
+              <input 
+                type="text" 
+                placeholder="Szukaj po tytule..." 
+                value={searchTytul}
+                onChange={(e) => setSearchTytul(e.target.value)}
+                style={{ width: '100%', padding: '10px', border: '1px solid #CBD5E1', borderRadius: '6px', boxSizing: 'border-box' }}
+              />
+            </div>
+            <div style={{ alignSelf: 'flex-end' }}>
+              <button 
+                onClick={() => {
+                  setSearchDo('');
+                  setSearchTytul('');
+                }}
+                style={{ padding: '10px 20px', background: '#E2E8F0', color: '#1E3A8A', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
+              >
+                Wyczyść
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div style={{ background: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
           {loading ? <p>Ładowanie...</p> : (
-            przelewy.length > 0 ? (
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ borderBottom: '2px solid #0EA5E9', background: '#F0F9FF' }}>
-                    <th style={{ textAlign: 'left', padding: '10px', color: '#1E3A8A' }}>Do</th>
-                    <SortHeader sortBy="kwota" label="Kwota" />
-                    <SortHeader sortBy="tytul" label="Tytuł" />
-                    <SortHeader sortBy="data" label="Data" />
-                  </tr>
-                </thead>
-                <tbody>
-                  {przelewy.map((przelew) => (
-                    <tr key={przelew.id} style={{ borderBottom: '1px solid #E2E8F0' }}>
-                      <td style={{ padding: '10px' }}>{przelew.do}</td>
-                      <td style={{ padding: '10px', color: '#DC2626', fontWeight: 'bold' }}>-{przelew.kwota} PLN</td>
-                      <td style={{ padding: '10px' }}>{przelew.tytul}</td>
-                      <td style={{ padding: '10px', color: '#64748B' }}>{new Date(przelew.data).toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+            filteredPrzelewy.length > 0 ? (
+              <>
+                <p style={{ color: '#64748B', marginBottom: '15px' }}>Znaleziono {filteredPrzelewy.length} przelewów</p>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid #0EA5E9', background: '#F0F9FF' }}>
+                      <th style={{ textAlign: 'left', padding: '10px', color: '#1E3A8A' }}>Do</th>
+                      <SortHeader sortBy="kwota" label="Kwota" />
+                      <SortHeader sortBy="tytul" label="Tytuł" />
+                      <SortHeader sortBy="data" label="Data" />
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {filteredPrzelewy.map((przelew) => (
+                      <tr key={przelew.id} style={{ borderBottom: '1px solid #E2E8F0' }}>
+                        <td style={{ padding: '10px' }}>{przelew.do}</td>
+                        <td style={{ padding: '10px', color: '#DC2626', fontWeight: 'bold' }}>-{przelew.kwota} PLN</td>
+                        <td style={{ padding: '10px' }}>{przelew.tytul}</td>
+                        <td style={{ padding: '10px', color: '#64748B' }}>{new Date(przelew.data).toLocaleString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
             ) : (
-              <p>Brak przelewów</p>
+              <p>Brak przelewów spełniających kryteria wyszukiwania</p>
             )
           )}
         </div>
