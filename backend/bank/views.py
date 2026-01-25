@@ -1,74 +1,28 @@
-from django.shortcuts import render
-from .serializers import PrzelewSerializer, UserSerializer
-from django.contrib.auth.models import User
-from django.db.models import Q
-from .models import Konto, Przelew
-from .services import pobierz_kursy
+from django.contrib import admin
+from django.http import JsonResponse
+from django.urls import path, include
 
-from rest_framework import viewsets, permissions
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from backend.bank.views import PrzelewViewSet, RejestracjaViewSet, KursyWalutView, StanKontaView
+from rest_framework import routers
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
-# Create your views here.
+def health(_request):
+    return JsonResponse({"ok": True})
 
-class PrzelewViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = PrzelewSerializer
-    def get_queryset(self):
-        user = self.request.user
-        return Przelew.objects.filter(
-            Q(nadawca__wlasciciel=user) | Q(odbiorca__wlasciciel=user)
-        )
+router = routers.DefaultRouter()
+router.register(r'przelewy', PrzelewViewSet, basename='przelew')
+router.register(r'register', RejestracjaViewSet, basename='register')
+router.register(r'kalkulator', KursyWalutView, basename='kalkulator')
 
 
-class RejestracjaViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [permissions.AllowAny]
-
-class KursyWalutView(viewsets.ViewSet):
-    def list(self,request):
-        kursy = pobierz_kursy()
-        if kursy is None:
-            return Response({"error": "Nie udało się pobrać kursów z NBP"})
-        return Response(kursy)
-    def create(self,request):
-        dane = request.data
-        try:
-            kwota = float(dane.get('kwota', 0))
-        except ValueError:
-            return Response({"error": "Kwota musi być liczbą"},status=400)
-        if kwota <= 0:
-            return Response({"error": "Kwota musi być większa od 0"},status=400)
-        kod_waluty = dane.get('kod', 'EUR')
-        kierunek = dane.get('kierunek', 'na_pln')
-        kursy = pobierz_kursy()
-        kurs_info = next((item for item in kursy if item["code"] == kod_waluty),None)
-
-        if kurs_info:
-            if kierunek == "na_pln":
-                wynik = kwota * kurs_info['mid']
-            elif kierunek == "z_pln":
-                wynik = kwota / kurs_info['mid']
-            return Response({
-                "kwota oryginalna": kwota,
-                "waluta": kod_waluty,
-                "kurs": kurs_info['mid'],
-                "wynik": round(wynik,2)
-            })
-        return Response({"error": "Nie znaleziono waluty"}, status=400)
-
-
-class StanKontaView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get(self, request):
-        try:
-            konto = Konto.objects.get(wlasciciel=request.user)
-            return Response({
-                'stan': str(konto.saldo),
-                'numer_konta': konto.numer_konta,
-                'status': konto.status_konta
-            })
-        except Konto.DoesNotExist:
-            return Response({"error": "Konto nie znalezione"}, status=404)
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("api/health/", health),
+    path('api/stan-konta/', StanKontaView.as_view(), name='stan_konta'),
+    path('api/', include(router.urls)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+]

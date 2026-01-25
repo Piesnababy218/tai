@@ -5,6 +5,7 @@ import Historia from './Historia';
 function Dashboard({ email, wyloguj }) {
   const [przelewy, setPrzelewy] = useState([]);
   const [stanKonta, setStanKonta] = useState(0);
+  const [numerKonta, setNumerKonta] = useState('');
   const [loading, setLoading] = useState(true);
   const [strona, setStrona] = useState('dashboard');
 
@@ -16,11 +17,16 @@ function Dashboard({ email, wyloguj }) {
         'Authorization': `Bearer ${token}`
       }
     })
-      .then(res => res.json())
-      .then(data => {
-        setStanKonta(data.stan);
+      .then(res => {
+        console.log('Stan konta status:', res.status);
+        return res.json();
       })
-      .catch(err => console.error('Błąd:', err));
+      .then(data => {
+        console.log('Stan konta response:', data);
+        setStanKonta(data.stan);
+        setNumerKonta(data.numer_konta);
+      })
+      .catch(err => console.error('Błąd stan-konta:', err));
 
     fetch('https://tai-p2p7.onrender.com/api/przelewy/', {
       headers: {
@@ -70,6 +76,7 @@ function Dashboard({ email, wyloguj }) {
         <div style={{ background: 'white', padding: '20px', borderRadius: '8px', marginBottom: '30px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderLeft: '4px solid #0EA5E9' }}>
           <h2 style={{ color: '#1E3A8A' }}>Stan Konta</h2>
           <p style={{ fontSize: '32px', fontWeight: 'bold', color: '#0EA5E9' }}>{stanKonta} PLN</p>
+          <p style={{ color: '#64748B', marginTop: '10px', fontSize: '14px' }}>Numer konta: {numerKonta}</p>
         </div>
 
         <div style={{ background: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
