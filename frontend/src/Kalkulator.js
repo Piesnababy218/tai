@@ -14,6 +14,10 @@ function Kalkulator({ setStrona, darkMode }) {
     pobierzKursy();
   }, []);
 
+  useEffect(() => {
+    setWynik(null);
+  }, [kierunek, waluty]);
+
   const pobierzKursy = () => {
     fetch('https://tai-p2p7.onrender.com/api/kalkulator/', {
       headers: {
@@ -131,18 +135,18 @@ function Kalkulator({ setStrona, darkMode }) {
 
               {wynik && (
                 <div className={`kalkulator-result ${darkMode ? 'dark-mode' : 'light-mode'}`}>
-                    <h3>Wynik</h3>
-                    <p>
-                    <strong>Kwota oryginalna:</strong> {wynik['kwota oryginalna']} {kierunek === 'na_pln' ? wynik.waluta : 'PLN'}
-                    </p>
-                    <p>
+                  <h3>Wynik</h3>
+                  <p>
+                    <strong>Kwota oryginalna:</strong> {wynik['kwota oryginalna']} {wynik.waluta}
+                  </p>
+                  <p>
                     <strong>Kurs:</strong> 1 {wynik.waluta} = {wynik.kurs} PLN
-                    </p>
-                    <p className="kalkulator-result-value">
-                    Wynik: {wynik.wynik} {kierunek === 'na_pln' ? 'PLN' : wynik.waluta}
-                    </p>
+                  </p>
+                  <p className="kalkulator-result-value">
+                    Wynik: {wynik.wynik} {kierunek === 'na_pln' ? 'PLN' : waluty}
+                  </p>
                 </div>
-                )}
+              )}
             </>
           )}
         </div>
