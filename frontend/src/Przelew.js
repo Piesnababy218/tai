@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './Przelew.css';
 
-function Przelew({ setStrona, email, darkMode, setRefresh }) {
+function Przelew({ setStrona, email }) {
   const [formData, setFormData] = useState({
     odbiorca: '',
     numer_konta: '',
@@ -98,11 +98,8 @@ function Przelew({ setStrona, email, darkMode, setRefresh }) {
       }
 
       const data = await response.json();
-      console.log('Przed setRefresh');
       alert('Przelew został wysłany!');
-      setRefresh(prev => prev + 1);
-      console.log('Po setRefresh');
-      setTimeout(() => setStrona('dashboard'), 100);
+      setStrona('dashboard');
     } catch (error) {
       console.error('Błąd:', error);
       alert('Błąd: ' + error.message);

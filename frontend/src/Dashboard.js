@@ -10,9 +10,8 @@ function Dashboard({ email, wyloguj, darkMode, toggleDarkMode }) {
   const [numerKonta, setNumerKonta] = useState('');
   const [loading, setLoading] = useState(true);
   const [strona, setStrona] = useState('dashboard');
-  const [refresh, setRefresh] = useState(0);
 
-  const loadData = () => {
+  useEffect(() => {
     const token = localStorage.getItem('access');
 
     fetch('https://tai-p2p7.onrender.com/api/stan-konta/', {
@@ -32,7 +31,7 @@ function Dashboard({ email, wyloguj, darkMode, toggleDarkMode }) {
         'Authorization': `Bearer ${token}`
       }
     })
-      .then(res => res.json())
+      .then(res => res.json()) 
       .then(data => {
         if (Array.isArray(data)) {
           setPrzelewy(data.slice(0, 10));
@@ -48,14 +47,10 @@ function Dashboard({ email, wyloguj, darkMode, toggleDarkMode }) {
         setPrzelewy([]);
         setLoading(false);
       });
-  };
-
-  useEffect(() => {
-    loadData();
-  }, [refresh]);
+  }, []);
 
   if (strona === 'przelew') {
-    return <Przelew setStrona={setStrona} email={email} darkMode={darkMode} setRefresh={setRefresh} />;
+    return <Przelew setStrona={setStrona} email={email} darkMode={darkMode} />;
   }
 
   if (strona === 'historia') {
