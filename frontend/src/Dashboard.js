@@ -89,7 +89,7 @@ function Dashboard({ email, wyloguj, darkMode, toggleDarkMode }) {
               <table className={`dashboard-table ${darkMode ? 'dark-mode' : 'light-mode'}`}>
                 <thead>
                   <tr>
-                    <th>Do</th>
+                    <th>Kontrahent</th>
                     <th>Kwota</th>
                     <th>Tytuł</th>
                     <th>Data</th>
@@ -117,8 +117,8 @@ function Dashboard({ email, wyloguj, darkMode, toggleDarkMode }) {
 
       <div className={`dashboard-right-sidebar ${darkMode ? 'dark-mode' : 'light-mode'}`}>
         <h3>Skróty</h3>
-        <p>Przelewy</p>
-        <p>Kalkulator</p>
+        <button onClick={() => setStrona('przelew')} className="shortcut-button">Przelewy</button>
+        <button onClick={() => setStrona('kalkulator')} className="shortcut-button">Kalkulator</button>
       </div>
     </div>
   );

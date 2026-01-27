@@ -83,10 +83,10 @@ function Historia({ setStrona, email, darkMode }) {
           <h3>Wyszukiwanie</h3>
           <div className="historia-search-inputs">
             <div className={`historia-search-group ${darkMode ? 'dark-mode' : 'light-mode'}`}>
-              <label>Do kogo (Email odbiorcy)</label>
+              <label>Kontrahent (Email)</label>
               <input 
                 type="text" 
-                placeholder="Szukaj po emailu odbiorcy..." 
+                placeholder="Szukaj po emailu kontrahenta..." 
                 value={searchOdbiorca}
                 onChange={(e) => setSearchOdbiorca(e.target.value)}
               />
@@ -120,7 +120,7 @@ function Historia({ setStrona, email, darkMode }) {
                 <table className={`historia-table ${darkMode ? 'dark-mode' : 'light-mode'}`}>
                   <thead>
                     <tr>
-                      <th>Do (Email)</th>
+                      <th>Kontrahent (Email)</th>
                       <th onClick={() => handleSort('kwota')} style={{ cursor: 'pointer' }}>Kwota {sortKey === 'kwota' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}</th>
                       <th onClick={() => handleSort('tytul')} style={{ cursor: 'pointer' }}>Tytuł {sortKey === 'tytul' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}</th>
                       <th onClick={() => handleSort('data')} style={{ cursor: 'pointer' }}>Data {sortKey === 'data' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}</th>
