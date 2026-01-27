@@ -155,10 +155,17 @@
 }
 
 .dashboard-table td {
-  color: #CBD5E1;
   padding: 10px;
+  color: #333;
 }
 
+.dashboard-table.dark-mode td {
+  color: #fff;
+}
+
+.dashboard-table.light-mode td {
+  color: #1E3A8A;
+}
 .dashboard-table-amount {
   font-weight: bold;
 }
