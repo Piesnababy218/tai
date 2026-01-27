@@ -18,6 +18,13 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem('access');
+    if (token) {
+      setStrona('dashboard');
+    }
+  }, []);
+
   const waliduj = () => {
     const noweBledy = {};
 
