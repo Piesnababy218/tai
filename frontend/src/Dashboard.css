@@ -167,6 +167,21 @@
   color: #1E3A8A;
 }
 
+.dashboard-table-amount.outgoing {
+  color: #DC2626 !important;
+}
+
+.dashboard-table-amount.incoming {
+  color: #10B981 !important;
+}
+
+.dashboard-table.dark-mode .dashboard-table-amount.outgoing {
+  color: #DC2626 !important;
+}
+
+.dashboard-table.dark-mode .dashboard-table-amount.incoming {
+  color: #10B981 !important;
+}
 .dashboard-table-amount {
   font-weight: bold;
 }
