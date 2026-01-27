@@ -137,7 +137,7 @@ function Kalkulator({ setStrona, darkMode }) {
                 <div className={`kalkulator-result ${darkMode ? 'dark-mode' : 'light-mode'}`}>
                   <h3>Wynik</h3>
                   <p>
-                    <strong>Kwota oryginalna:</strong> {wynik['kwota oryginalna']} {wynik.waluta}
+                    <strong>Kwota oryginalna:</strong> {wynik['kwota_oryginalna']} {kierunek === 'na_pln' ? waluty : 'PLN'}
                   </p>
                   <p>
                     <strong>Kurs:</strong> 1 {wynik.waluta} = {wynik.kurs} PLN

@@ -99,7 +99,7 @@ function Przelew({ setStrona, email }) {
 
       const data = await response.json();
       alert('Przelew został wysłany!');
-      setStrona('dashboard');
+      window.location.href = '/';
     } catch (error) {
       console.error('Błąd:', error);
       alert('Błąd: ' + error.message);
