@@ -116,12 +116,6 @@ function Dashboard({ email, wyloguj, darkMode, toggleDarkMode }) {
           )}
         </div>
       </div>
-
-      <div className={`dashboard-right-sidebar ${darkMode ? 'dark-mode' : 'light-mode'}`}>
-        <h3>Skróty</h3>
-        <button onClick={() => setStrona('przelew')} className="shortcut-button">Przelewy</button>
-        <button onClick={() => setStrona('kalkulator')} className="shortcut-button">Kalkulator</button>
-      </div>
     </div>
   );
 }

@@ -60,7 +60,7 @@
 }
 
 .dashboard-content {
-  flex: 0.7;
+  flex: 0.85;
   padding: 30px;
   overflow-y: auto;
 }
@@ -185,42 +185,6 @@
 
 .dashboard-table.dark-mode .dashboard-table-date {
   color: #aaa;
-}
-
-.dashboard-right-sidebar {
-  flex: 0.15;
-  padding: 20px;
-  color: white;
-}
-
-.dashboard-right-sidebar.dark-mode {
-  background: #0f3460;
-}
-
-.dashboard-right-sidebar.light-mode {
-  background: #0F172A;
-}
-
-.dashboard-right-sidebar h3 {
-  color: #0EA5E9;
-  margin-bottom: 15px;
-}
-
-.shortcut-button {
-  width: 100%;
-  padding: 12px;
-  background: #0EA5E9;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 10px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.shortcut-button:hover {
-  background: #0d94d0;
 }
 
 .dashboard-loading,
