@@ -10,8 +10,9 @@ function Dashboard({ email, wyloguj, darkMode, toggleDarkMode }) {
   const [numerKonta, setNumerKonta] = useState('');
   const [loading, setLoading] = useState(true);
   const [strona, setStrona] = useState('dashboard');
+  const [refresh, setRefresh] = useState(0);
 
-  useEffect(() => {
+  const loadData = () => {
     const token = localStorage.getItem('access');
 
     fetch('https://tai-p2p7.onrender.com/api/stan-konta/', {
@@ -47,10 +48,14 @@ function Dashboard({ email, wyloguj, darkMode, toggleDarkMode }) {
         setPrzelewy([]);
         setLoading(false);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, [refresh]);
 
   if (strona === 'przelew') {
-    return <Przelew setStrona={setStrona} email={email} darkMode={darkMode} />;
+    return <Przelew setStrona={setStrona} email={email} darkMode={darkMode} setRefresh={setRefresh} />;
   }
 
   if (strona === 'historia') {
