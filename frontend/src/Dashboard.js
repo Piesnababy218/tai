@@ -89,7 +89,8 @@ function Dashboard({ email, wyloguj, darkMode, toggleDarkMode }) {
               <table className={`dashboard-table ${darkMode ? 'dark-mode' : 'light-mode'}`}>
                 <thead>
                   <tr>
-                    <th>Kontrahent</th>
+                    <th>Od kogo</th>
+                    <th>Do kogo</th>
                     <th>Kwota</th>
                     <th>Tytuł</th>
                     <th>Data</th>
@@ -98,7 +99,8 @@ function Dashboard({ email, wyloguj, darkMode, toggleDarkMode }) {
                 <tbody>
                   {przelewy.map((przelew) => (
                     <tr key={przelew.id}>
-                      <td>{przelew.odbiorca_nazwa}</td>
+                      <td>{przelew.jest_wychodzacy ? '-' : przelew.nadawca_nazwa}</td>
+                      <td>{przelew.jest_wychodzacy ? przelew.odbiorca_nazwa : '-'}</td>
                       <td className={`dashboard-table-amount ${przelew.jest_wychodzacy ? 'outgoing' : 'incoming'}`}>
                         {przelew.jest_wychodzacy ? '-' : '+'}{przelew.kwota} PLN
                       </td>

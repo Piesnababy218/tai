@@ -58,9 +58,10 @@ function Historia({ setStrona, email, darkMode }) {
   };
 
   const filteredPrzelewy = przelewy.filter(przelew => {
-    const odborcaValue = (przelew.odbiorca_nazwa || '').toString().toLowerCase();
+    const searchValue = (searchOdbiorca || '').toString().toLowerCase();
     const tytuValue = (przelew.tytul || '').toString().toLowerCase();
-    const matchesOdbiorca = odborcaValue.includes(searchOdbiorca.toLowerCase());
+    const matchesOdbiorca = searchValue === '' || 
+      (przelew.jest_wychodzacy ? przelew.odbiorca_nazwa.toLowerCase().includes(searchValue) : przelew.nadawca_nazwa.toLowerCase().includes(searchValue));
     const matchesTytul = tytuValue.includes(searchTytul.toLowerCase());
     return matchesOdbiorca && matchesTytul;
   });
@@ -83,10 +84,10 @@ function Historia({ setStrona, email, darkMode }) {
           <h3>Wyszukiwanie</h3>
           <div className="historia-search-inputs">
             <div className={`historia-search-group ${darkMode ? 'dark-mode' : 'light-mode'}`}>
-              <label>Kontrahent (Email)</label>
+              <label>Od/Do kogo (Email)</label>
               <input 
                 type="text" 
-                placeholder="Szukaj po emailu kontrahenta..." 
+                placeholder="Szukaj po emailu..." 
                 value={searchOdbiorca}
                 onChange={(e) => setSearchOdbiorca(e.target.value)}
               />
@@ -120,7 +121,8 @@ function Historia({ setStrona, email, darkMode }) {
                 <table className={`historia-table ${darkMode ? 'dark-mode' : 'light-mode'}`}>
                   <thead>
                     <tr>
-                      <th>Kontrahent (Email)</th>
+                      <th>Od kogo</th>
+                      <th>Do kogo</th>
                       <th onClick={() => handleSort('kwota')} style={{ cursor: 'pointer' }}>Kwota {sortKey === 'kwota' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}</th>
                       <th onClick={() => handleSort('tytul')} style={{ cursor: 'pointer' }}>Tytuł {sortKey === 'tytul' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}</th>
                       <th onClick={() => handleSort('data')} style={{ cursor: 'pointer' }}>Data {sortKey === 'data' ? (sortOrder === 'asc' ? '↑' : '↓') : ''}</th>
@@ -129,7 +131,8 @@ function Historia({ setStrona, email, darkMode }) {
                   <tbody>
                     {filteredPrzelewy.map((przelew) => (
                       <tr key={przelew.id}>
-                        <td>{przelew.odbiorca_nazwa}</td>
+                        <td>{przelew.jest_wychodzacy ? '-' : przelew.nadawca_nazwa}</td>
+                        <td>{przelew.jest_wychodzacy ? przelew.odbiorca_nazwa : '-'}</td>
                         <td className={`historia-table-amount ${przelew.jest_wychodzacy ? 'outgoing' : 'incoming'}`}>
                           {przelew.jest_wychodzacy ? '-' : '+'}{przelew.kwota} PLN
                         </td>
