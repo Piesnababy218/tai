@@ -98,9 +98,11 @@ function Przelew({ setStrona, email, darkMode, setRefresh }) {
       }
 
       const data = await response.json();
+      console.log('Przed setRefresh');
       alert('Przelew został wysłany!');
       setRefresh(prev => prev + 1);
-      setStrona('dashboard');
+      console.log('Po setRefresh');
+      setTimeout(() => setStrona('dashboard'), 100);
     } catch (error) {
       console.error('Błąd:', error);
       alert('Błąd: ' + error.message);
