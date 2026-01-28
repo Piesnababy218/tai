@@ -8,7 +8,6 @@ class Konto(models.Model):
     wlasciciel = models.ForeignKey(User, on_delete=models.CASCADE)
     saldo = models.DecimalField(max_digits=15,decimal_places=2, default = 0)
     status_konta = models.CharField(max_length=11, choices=[('aktywne', 'Aktywne'), ('zablokowane', 'Zablokowane')], default='aktywne')
-    #waluta = models.CharField(max_length=3, default = "PLN")
 
 class Przelew(models.Model):
     tytul = models.CharField(max_length=50, default="Przelew krajowy")

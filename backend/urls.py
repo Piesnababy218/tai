@@ -9,9 +9,6 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-def health(_request):
-    return JsonResponse({"ok": True})
-
 router = routers.DefaultRouter()
 router.register(r'przelewy', PrzelewViewSet, basename='przelew')
 router.register(r'register', RejestracjaViewSet, basename='register')
@@ -20,7 +17,6 @@ router.register(r'kalkulator', KursyWalutView, basename='kalkulator')
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/health/", health),
     path('api/stan-konta/', StanKontaView.as_view(), name='stan_konta'),
     path('api/konto-by-numer/<str:numer>/', KontoByNumerView.as_view(), name='konto_by_numer'),
     path('api/', include(router.urls)),

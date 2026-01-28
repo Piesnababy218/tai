@@ -44,14 +44,12 @@ class PrzelewSerializer(serializers.ModelSerializer):
             with transaction.atomic():
                 nadawca = data['nadawca']
                 odbiorca = data['odbiorca']
-                kwota = data['kwota']
-                
+                kwota = data['kwota']         
                 nadawca.saldo -= kwota
                 nadawca.save()
                 
                 odbiorca.saldo += kwota
-                odbiorca.save()
-                
+                odbiorca.save()                
                 return Przelew.objects.create(**data)
         except Exception as e:
             raise serializers.ValidationError({"error": "Błąd krytyczny transakcji", "details": str(e)})

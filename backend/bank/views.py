@@ -21,7 +21,6 @@ class PrzelewViewSet(viewsets.ModelViewSet):
             Q(nadawca__wlasciciel=user) | Q(odbiorca__wlasciciel=user)
         )
         
-        # Sortowanie z backendu
         sort_by = self.request.query_params.get('sort', 'data')
         sort_order = self.request.query_params.get('order', 'desc')
         
